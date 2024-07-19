@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 class Node {
-  constructor(value = null, next = null) {
+  constructor(key = null, value = null, next = null) {
+    this.key = key;
     this.value = value;
     this.next = next;
   }
@@ -8,22 +9,23 @@ class Node {
 
 export default class LinkedList {
   constructor(init = null) {
-    init === null ? (this.head = null) : new Node(init, null);
+    // init head with a value if provided, otherwise head is null
+    this.head = init !== null ? new Node(init, null) : null;
   }
 
-  append = (value) => {
+  append = (key, value) => {
     if (this.head === null) {
-      return (this.head = new Node(value, null));
+      return (this.head = new Node(key, value, null));
     }
     let curr = this.head;
     while (curr.next !== null) {
       curr = curr.next;
     }
-    curr.next = new Node(value, null);
+    curr.next = new Node(key, value, null);
   };
 
-  prepend = (value) => {
-    this.head = new Node(value, this.head);
+  prepend = (key, value) => {
+    this.head = new Node(key, value, this.head);
   };
 
   size = () => {
@@ -91,13 +93,13 @@ export default class LinkedList {
     }
   };
 
-  contains = (value) => {
+  contains = (key) => {
     if (this.head === null) {
       return "List is empty";
     }
     let curr = this.head;
     while (curr !== null) {
-      if (curr.value === value) {
+      if (curr.key === key) {
         return true;
       }
       curr = curr.next;
@@ -105,14 +107,14 @@ export default class LinkedList {
     return false;
   };
 
-  find = (value) => {
+  find = (key) => {
     if (this.head === null) {
       return "List is empty";
     }
     let curr = this.head;
     let index = 1;
     while (curr !== null) {
-      if (curr.value === value) {
+      if (curr.key === key) {
         return index;
       }
       curr = curr.next;
@@ -134,7 +136,7 @@ export default class LinkedList {
     return (stringOfValues += `null`);
   };
 
-  insertAt = (value, index) => {
+  insertAt = (key, value, index) => {
     if (index < 1) {
       return "Invalid number";
     }
@@ -142,7 +144,7 @@ export default class LinkedList {
       return "List is empty";
     }
     if (index === 1) {
-      this.head = new Node(value, this.head);
+      this.head = new Node(key, value, this.head);
       return;
     }
     let curr = this.head;
@@ -150,7 +152,7 @@ export default class LinkedList {
     let currAt = 1;
     while (curr !== null) {
       if (currAt === index) {
-        prev.next = new Node(value, curr);
+        prev.next = new Node(key, value, curr);
         return;
       }
       prev = curr;
@@ -159,7 +161,7 @@ export default class LinkedList {
     }
     // insert at the end of the list if index is greater than
     // the node list
-    prev.next = new Node(value, null);
+    prev.next = new Node(key, value, null);
   };
 
   removeAt = (index) => {
