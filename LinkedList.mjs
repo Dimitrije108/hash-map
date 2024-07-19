@@ -7,8 +7,8 @@ class Node {
 }
 
 export default class LinkedList {
-  constructor() {
-    this.head = null;
+  constructor(init = null) {
+    init === null ? (this.head = null) : new Node(init, null);
   }
 
   append = (value) => {
