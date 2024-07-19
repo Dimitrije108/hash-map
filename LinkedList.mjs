@@ -8,9 +8,13 @@ class Node {
 }
 
 export default class LinkedList {
-  constructor(init = null) {
-    // init head with a value if provided, otherwise head is null
-    this.head = init !== null ? new Node(init, null) : null;
+  constructor(key = null, value = null) {
+    // init head with a key-value pair if provided, otherwise head is null
+    if (key && value) {
+      this.head = new Node(key, value, null);
+    } else {
+      this.head = null;
+    }
   }
 
   append = (key, value) => {

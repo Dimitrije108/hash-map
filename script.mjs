@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-
-// index needed to access a bucket
-// to limit bucket length:
+import LinkedList from "./LinkedList.mjs";
 
 class HashMap {
-  constructor() {}
+  constructor() {
+    this.buckets = new Array(16).fill(null);
+  }
 
   hash = (key) => {
     let hashCode = 0;
@@ -17,31 +17,49 @@ class HashMap {
     return hashCode;
   };
 
-  // set = (key, value) => {
-  // every bucket when receving a value needs to create a linked list
-  // and first item in is linked list's head;
-  // if the key already exists overwrite(update) old value
-  // if a bucket is already populated by one value and another value
-  // is assigned to the same bucket, then the collision is resolved
-  // creating a linked list
-  // }
-
-  // index = hash(key);
+  set = (key, value) => {
+    const index = this.hash(key);
+    // If the key exists, overwrite the value, otherwise make a new linked
+    // list if bucket is empty, or append to the linked list thats already there
+    if (this.buckets[index] === null) {
+      this.buckets[index] = new LinkedList(key, value);
+    } else if (this.buckets[index].contains(key)) {
+      this.buckets[index].insertAt(key, value, this.buckets[index].find(key));
+    } else {
+      this.buckets[index].append(key, value);
+    }
+  };
+  //  throw an error when accessing an out of bound index
   // if (index < 0 || index >= buckets.length) {
   //   throw new Error("Trying to access index out of bound");
   // }
 }
 
 const test = new HashMap();
-console.log(test.hash("apple"));
-console.log(test.hash("banana"));
-console.log(test.hash("carrot"));
-console.log(test.hash("dog"));
-console.log(test.hash("elephant"));
-console.log(test.hash("frog"));
-console.log(test.hash("grape"));
-console.log(test.hash("hat"));
-console.log(test.hash("ice cream"));
-console.log(test.hash("jacket"));
-console.log(test.hash("kite"));
-console.log(test.hash("lion"));
+
+test.set("apple", "red");
+test.set("banana", "yellow");
+test.set("carrot", "orange");
+test.set("dog", "brown");
+test.set("elephant", "gray");
+test.set("frog", "green");
+test.set("grape", "purple");
+test.set("hat", "black");
+test.set("ice cream", "white");
+test.set("jacket", "blue");
+test.set("kite", "pink");
+test.set("lion", "golden");
+console.log(test.buckets);
+
+// console.log(test.hash("apple"));
+// console.log(test.hash("banana"));
+// console.log(test.hash("carrot"));
+// console.log(test.hash("dog"));
+// console.log(test.hash("elephant"));
+// console.log(test.hash("frog"));
+// console.log(test.hash("grape"));
+// console.log(test.hash("hat"));
+// console.log(test.hash("ice cream"));
+// console.log(test.hash("jacket"));
+// console.log(test.hash("kite"));
+// console.log(test.hash("lion"));
