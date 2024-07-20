@@ -56,6 +56,16 @@ class HashMap {
       return false;
     }
   };
+
+  length = () => {
+    let sum = 0;
+    this.buckets.forEach((bucket) => {
+      if (bucket !== null) {
+        sum += bucket.size();
+      }
+    });
+    return sum;
+  };
   //  throw an error when accessing an out of bound index
   // if (index < 0 || index >= buckets.length) {
   //   throw new Error("Trying to access index out of bound");
@@ -79,6 +89,7 @@ test.set("lion", "golden");
 // console.log(test.get("elephant"));
 // console.log(test.has("jimmer"));
 // console.log(test.remove("dog"));
+// console.log(test.length());
 console.log(test.buckets);
 
 // console.log(test.hash("apple"));
