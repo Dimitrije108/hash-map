@@ -195,9 +195,6 @@ export default class LinkedList {
   };
 
   replaceValue = (key, value) => {
-    if (this.head === null) {
-      return "List is empty";
-    }
     let curr = this.head;
     while (curr !== null) {
       if (curr.key === key) {
@@ -205,6 +202,16 @@ export default class LinkedList {
       }
       curr = curr.next;
     }
-    return "Key not found";
+  };
+
+  getValue = (key) => {
+    let curr = this.head;
+    while (curr !== null) {
+      if (curr.key === key) {
+        return curr.value;
+      }
+      curr = curr.next;
+    }
+    return null;
   };
 }
