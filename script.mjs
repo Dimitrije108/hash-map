@@ -70,6 +70,26 @@ class HashMap {
   clear = () => {
     this.buckets = new Array(16).fill(null);
   };
+
+  keys = () => {
+    let arr = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket !== null) {
+        arr = arr.concat(bucket.getKeys());
+      }
+    });
+    return arr;
+  };
+
+  values = () => {
+    let arr = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket !== null) {
+        arr = arr.concat(bucket.getValues());
+      }
+    });
+    return arr;
+  };
   //  throw an error when accessing an out of bound index
   // if (index < 0 || index >= buckets.length) {
   //   throw new Error("Trying to access index out of bound");
@@ -95,7 +115,9 @@ test.set("lion", "golden");
 // console.log(test.remove("dog"));
 // console.log(test.length());
 // console.log(test.clear());
-console.log(test.buckets);
+// console.log(test.buckets);
+// console.log(test.keys());
+// console.log(test.values());
 
 // console.log(test.hash("apple"));
 // console.log(test.hash("banana"));

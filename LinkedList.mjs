@@ -194,14 +194,24 @@ export default class LinkedList {
     return "No element at that index";
   };
 
-  replaceValue = (key, value) => {
+  getKeys = () => {
+    let arr = [];
     let curr = this.head;
     while (curr !== null) {
-      if (curr.key === key) {
-        curr.value = value;
-      }
+      arr.push(curr.key);
       curr = curr.next;
     }
+    return arr;
+  };
+
+  getValues = () => {
+    let arr = [];
+    let curr = this.head;
+    while (curr !== null) {
+      arr.push(curr.value);
+      curr = curr.next;
+    }
+    return arr;
   };
 
   getValue = (key) => {
@@ -213,5 +223,15 @@ export default class LinkedList {
       curr = curr.next;
     }
     return null;
+  };
+
+  replaceValue = (key, value) => {
+    let curr = this.head;
+    while (curr !== null) {
+      if (curr.key === key) {
+        curr.value = value;
+      }
+      curr = curr.next;
+    }
   };
 }
