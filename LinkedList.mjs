@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// Both Node and LinkedList classes and methods are adapted to be
+// used in a hash map
 class Node {
   constructor(key = null, value = null, next = null) {
     this.key = key;
@@ -209,6 +211,20 @@ export default class LinkedList {
     let curr = this.head;
     while (curr !== null) {
       arr.push(curr.value);
+      curr = curr.next;
+    }
+    return arr;
+  };
+
+  getEntries = () => {
+    let arr = [];
+    let curr = this.head;
+    // for each entry(key, value pair) create a subarray
+    while (curr !== null) {
+      let subArr = [];
+      subArr.push(curr.key);
+      subArr.push(curr.value);
+      arr.push(subArr);
       curr = curr.next;
     }
     return arr;

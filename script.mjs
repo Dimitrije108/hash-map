@@ -90,6 +90,19 @@ class HashMap {
     });
     return arr;
   };
+
+  entries = () => {
+    let arr = [];
+    this.buckets.forEach((bucket) => {
+      if (bucket !== null) {
+        // transfer all returned subarrays from buckets into the main array
+        bucket.getEntries().forEach((subArr) => {
+          arr.push(subArr);
+        });
+      }
+    });
+    return arr;
+  };
   //  throw an error when accessing an out of bound index
   // if (index < 0 || index >= buckets.length) {
   //   throw new Error("Trying to access index out of bound");
@@ -118,6 +131,7 @@ test.set("lion", "golden");
 // console.log(test.buckets);
 // console.log(test.keys());
 // console.log(test.values());
+console.log(test.entries());
 
 // console.log(test.hash("apple"));
 // console.log(test.hash("banana"));
