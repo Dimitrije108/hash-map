@@ -20,6 +20,10 @@ class HashMap {
   set = (key, value) => {
     // NEED TO ADD GROWTH LATER
     const index = this.hash(key);
+    // Throw an error when accessing an out of bound index
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bound");
+    }
     // If the key exists, overwrite the value, otherwise make a new linked
     // list if bucket is empty, or append to the linked list thats already there
     if (this.buckets[index] === null) {
@@ -33,6 +37,10 @@ class HashMap {
 
   get = (key) => {
     const index = this.hash(key);
+    // Throw an error when accessing an out of bound index
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bound");
+    }
 
     if (this.buckets[index].contains(key)) {
       return this.buckets[index].getValue(key);
@@ -43,11 +51,19 @@ class HashMap {
 
   has = (key) => {
     const index = this.hash(key);
+    // Throw an error when accessing an out of bound index
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bound");
+    }
     return this.buckets[index].contains(key);
   };
 
   remove = (key) => {
     const index = this.hash(key);
+    // Throw an error when accessing an out of bound index
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bound");
+    }
     if (this.buckets[index].contains(key)) {
       const itemIndex = this.buckets[index].find(key);
       this.buckets[index].removeAt(itemIndex);
@@ -103,10 +119,6 @@ class HashMap {
     });
     return arr;
   };
-  //  throw an error when accessing an out of bound index
-  // if (index < 0 || index >= buckets.length) {
-  //   throw new Error("Trying to access index out of bound");
-  // }
 }
 
 const test = new HashMap();
@@ -123,14 +135,14 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-// console.log(test.get("elephant"));
-// console.log(test.has("jimmer"));
-// console.log(test.remove("dog"));
-// console.log(test.length());
+console.log(test.get("elephant"));
+console.log(test.has("jimmer"));
+console.log(test.remove("dog"));
+console.log(test.length());
 // console.log(test.clear());
-// console.log(test.buckets);
-// console.log(test.keys());
-// console.log(test.values());
+console.log(test.buckets);
+console.log(test.keys());
+console.log(test.values());
 console.log(test.entries());
 
 // console.log(test.hash("apple"));
