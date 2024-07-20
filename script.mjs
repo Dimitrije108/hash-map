@@ -40,6 +40,22 @@ class HashMap {
       return null;
     }
   };
+
+  has = (key) => {
+    const index = this.hash(key);
+    return this.buckets[index].contains(key);
+  };
+
+  remove = (key) => {
+    const index = this.hash(key);
+    if (this.buckets[index].contains(key)) {
+      const itemIndex = this.buckets[index].find(key);
+      this.buckets[index].removeAt(itemIndex);
+      return true;
+    } else {
+      return false;
+    }
+  };
   //  throw an error when accessing an out of bound index
   // if (index < 0 || index >= buckets.length) {
   //   throw new Error("Trying to access index out of bound");
@@ -60,7 +76,9 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-console.log(test.get("elephant"));
+// console.log(test.get("elephant"));
+// console.log(test.has("jimmer"));
+// console.log(test.remove("dog"));
 console.log(test.buckets);
 
 // console.log(test.hash("apple"));
