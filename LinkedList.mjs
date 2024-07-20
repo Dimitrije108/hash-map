@@ -193,4 +193,18 @@ export default class LinkedList {
     }
     return "No element at that index";
   };
+
+  replaceValue = (key, value) => {
+    if (this.head === null) {
+      return "List is empty";
+    }
+    let curr = this.head;
+    while (curr !== null) {
+      if (curr.key === key) {
+        curr.value = value;
+      }
+      curr = curr.next;
+    }
+    return "Key not found";
+  };
 }

@@ -18,13 +18,14 @@ class HashMap {
   };
 
   set = (key, value) => {
+    // NEED TO ADD GROWTH LATER
     const index = this.hash(key);
     // If the key exists, overwrite the value, otherwise make a new linked
     // list if bucket is empty, or append to the linked list thats already there
     if (this.buckets[index] === null) {
       this.buckets[index] = new LinkedList(key, value);
     } else if (this.buckets[index].contains(key)) {
-      this.buckets[index].insertAt(key, value, this.buckets[index].find(key));
+      this.buckets[index].replaceValue(key, value);
     } else {
       this.buckets[index].append(key, value);
     }
