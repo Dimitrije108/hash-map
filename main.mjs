@@ -1,6 +1,8 @@
 import HashMap from "./HashMap.mjs";
+import HashSet from "./HashSet.mjs";
 
 const test = new HashMap();
+const testSet = new HashSet();
 
 test.set("apple", "red");
 test.set("banana", "yellow");
@@ -31,5 +33,27 @@ test.set("hat", "sombrero");
 // console.log(test.keys());
 // console.log(test.values());
 // console.log(test.entries());
+// console.log(test.buckets);
 
-console.log(test.buckets);
+testSet.set("apple");
+testSet.set("banana");
+testSet.set("carrot");
+testSet.set("dog");
+testSet.set("elephant");
+testSet.set("frog");
+testSet.set("grape");
+testSet.set("hat");
+testSet.set("ice cream");
+testSet.set("jacket");
+testSet.set("kite");
+testSet.set("lion");
+
+testSet.set("jacket");
+testSet.set("jimmer");
+
+// console.log(testSet.has("chaqueta"));
+// console.log(testSet.remove("jacket"));
+// console.log(testSet.length());
+// console.log(testSet.clear());
+// console.log(testSet.keys());
+// console.log(testSet.buckets);
