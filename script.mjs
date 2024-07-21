@@ -3,88 +3,109 @@ import LinkedList from "./LinkedList.mjs";
 
 class HashMap {
   constructor() {
-    this.buckets = new Array(16).fill(null);
+    this.capacity = 16;
+    this.loadFactor = 0.75;
+    this.buckets = new Array(this.capacity).fill(null);
   }
+  // Expand buckets and copy entries over to the new list
+  grow = () => {
+    this.capacity = this.capacity * 2;
+    let prevList = this.entries();
+    this.buckets = new Array(this.capacity).fill(null);
 
+    prevList.forEach((entry) => {
+      this.set(entry[0], entry[1]);
+    });
+  };
+  // Check if the buckets need to grow to support more values
+  checkCapacity = () => {
+    if (this.length() > this.loadFactor * this.capacity) {
+      this.grow();
+    }
+  };
+  // Throw an error when accessing an out of bound index
+  checkBounds = (index) => {
+    if (index < 0 || index >= this.buckets.length) {
+      throw new Error("Trying to access index out of bound");
+    }
+  };
+  // Convert key into a hash code
   hash = (key) => {
     let hashCode = 0;
 
     const primeNumber = 31;
     for (let i = 0; i < key.length; i++) {
-      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % 16;
+      // modulo after each iteration because JavaScript is unable to
+      // hold large numbers precisely and can cause issues
+      hashCode = (primeNumber * hashCode + key.charCodeAt(i)) % this.capacity;
     }
 
     return hashCode;
   };
 
   set = (key, value) => {
-    // NEED TO ADD GROWTH LATER
     const index = this.hash(key);
-    // Throw an error when accessing an out of bound index
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bound");
-    }
-    // If the key exists, overwrite the value, otherwise make a new linked
-    // list if bucket is empty, or append to the linked list thats already there
-    if (this.buckets[index] === null) {
+    const bucket = this.buckets[index];
+    this.checkBounds(index);
+    // If the key exists overwrite its value, otherwise make a new linked list if
+    // the bucket is empty, or append to the linked list that's already there
+    if (bucket === null) {
       this.buckets[index] = new LinkedList(key, value);
-    } else if (this.buckets[index].contains(key)) {
-      this.buckets[index].replaceValue(key, value);
+    } else if (bucket.contains(key)) {
+      bucket.replaceValue(key, value);
     } else {
-      this.buckets[index].append(key, value);
+      bucket.append(key, value);
     }
+    this.checkCapacity();
   };
 
   get = (key) => {
     const index = this.hash(key);
-    // Throw an error when accessing an out of bound index
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bound");
-    }
-
-    if (this.buckets[index].contains(key)) {
-      return this.buckets[index].getValue(key);
-    } else {
-      return null;
-    }
+    const bucket = this.buckets[index];
+    this.checkBounds(index);
+    // Check if bucket is populated first
+    return bucket === null ? null : bucket.getValue(key);
   };
 
   has = (key) => {
     const index = this.hash(key);
-    // Throw an error when accessing an out of bound index
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bound");
-    }
-    return this.buckets[index].contains(key);
+    const bucket = this.buckets[index];
+    this.checkBounds(index);
+    // Check if bucket is populated first
+    return bucket === null ? false : bucket.contains(key);
   };
 
   remove = (key) => {
     const index = this.hash(key);
-    // Throw an error when accessing an out of bound index
-    if (index < 0 || index >= this.buckets.length) {
-      throw new Error("Trying to access index out of bound");
-    }
-    if (this.buckets[index].contains(key)) {
-      const itemIndex = this.buckets[index].find(key);
-      this.buckets[index].removeAt(itemIndex);
-      return true;
-    } else {
+    const bucket = this.buckets[index];
+    this.checkBounds(index);
+
+    if (bucket === null || !bucket.contains(key)) {
       return false;
     }
+
+    const itemIndex = bucket.find(key);
+
+    if (itemIndex === bucket.size()) {
+      this.buckets[index] = null;
+    } else {
+      bucket.removeAt(itemIndex);
+    }
+    return true;
   };
 
   length = () => {
-    let sum = 0;
+    let length = 0;
     this.buckets.forEach((bucket) => {
       if (bucket !== null) {
-        sum += bucket.size();
+        length += bucket.size();
       }
     });
-    return sum;
+    return length;
   };
 
   clear = () => {
-    this.buckets = new Array(16).fill(null);
+    this.buckets = new Array(this.capacity).fill(null);
   };
 
   keys = () => {
@@ -135,25 +156,22 @@ test.set("ice cream", "white");
 test.set("jacket", "blue");
 test.set("kite", "pink");
 test.set("lion", "golden");
-console.log(test.get("elephant"));
-console.log(test.has("jimmer"));
-console.log(test.remove("dog"));
-console.log(test.length());
-// console.log(test.clear());
-console.log(test.buckets);
-console.log(test.keys());
-console.log(test.values());
-console.log(test.entries());
 
-// console.log(test.hash("apple"));
-// console.log(test.hash("banana"));
-// console.log(test.hash("carrot"));
-// console.log(test.hash("dog"));
-// console.log(test.hash("elephant"));
-// console.log(test.hash("frog"));
-// console.log(test.hash("grape"));
-// console.log(test.hash("hat"));
-// console.log(test.hash("ice cream"));
-// console.log(test.hash("jacket"));
-// console.log(test.hash("kite"));
-// console.log(test.hash("lion"));
+test.set("jacket", "meow");
+test.set("kite", "awaw");
+
+test.set("moon", "silver");
+
+test.set("dog", "perro");
+test.set("hat", "sombrero");
+
+// console.log(test.get("tested"));
+// console.log(test.has("elephant"));
+// console.log(test.remove("apple"));
+// console.log(test.length());
+// console.log(test.clear());
+// console.log(test.keys());
+// console.log(test.values());
+// console.log(test.entries());
+
+// console.log(test.buckets);
